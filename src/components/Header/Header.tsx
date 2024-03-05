@@ -14,13 +14,12 @@ export default function Header() {
 	};
 
 	return (
-		<nav className="bg-white flex justify-between px-4 py-4">
+		<nav className="flex justify-between">
 			<div className="py-2">
-				<HeaderLink href="/" linkText="Kyle Hu" />
+				<HeaderLink href="/" linkText="Home" />
 			</div>
 
 			<div className="py-2">
-				<HeaderLink href="/" linkText="Home" />
 				<HeaderLink href="/blog" linkText="Blog" />
 			</div>
 			<div className="flex">

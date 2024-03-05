@@ -9,18 +9,22 @@ import Header from "../components/Header/Header"
 <!doctype html>
 <html lang="en">
 	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-		<Header />
+		
 	</head>
 	<body>
 		<main>
-			<div class="text-4xl">Hello! My name is Kyle.</div>
-			<p>
-				I'm a programmer who focuses on web development to solve real world problems. 
-				This website serves as my portfolio and where I post blog posts. As of now,
-				I plan to post leetcode solutions and possibly some development
-				logs of my own personal projects.
-			</p>
+			<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+			<Header />
+			<div class="main-body text-left mt-10">
+				<div class="text-4xl mb-3">Hello! My name is Kyle.</div>
+				<p>
+					I'm a programmer who focuses on web development using TypeScript, React, and Supabase. 
+					This website serves as my portfolio and where I post blog posts. As of now,
+					I plan to post my leetcode solutions and development logs of my personal projects.
+					Thank you for visiting.
+				</p>
+			</div>
+			
 		</main>
 	</body>
 </html>
