@@ -5,7 +5,7 @@ interface HeaderLinkProps {
 
 export default function HeaderLink({ href, linkText }: HeaderLinkProps) {
 	return (
-		<a href={`/personal-website/${href}`} className="text-black text-2xl">
+		<a href={`${href}`} className="text-black text-2xl">
 			{linkText}
 		</a>
 	);
