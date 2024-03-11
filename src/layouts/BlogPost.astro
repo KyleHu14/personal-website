@@ -30,7 +30,7 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 				box-shadow: var(--box-shadow);
 			}
 			.prose {
-				width: 720px;
+				width: 750px;
 				max-width: calc(100% - 2em);
 				margin: auto;
 				color: rgb(var(--gray-dark));
@@ -58,7 +58,7 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 		
 		<main>
 			<article>
-				<div class="prose">
+				<div class="prose prose-h5:text-3xl prose-p:text-xl">
 					<Header />
 					<div class="title">
 						<div class="text-5xl font-semibold">{title}</div>

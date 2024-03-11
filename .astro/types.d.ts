@@ -136,6 +136,13 @@ declare module 'astro:content' {
 
 	type ContentEntryMap = {
 		"blog": {
+"198-house-robber.md": {
+	id: "198-house-robber.md";
+  slug: "198-house-robber";
+  body: string;
+  collection: "blog";
+  data: InferEntrySchema<"blog">
+} & { render(): Render[".md"] };
 "53-maximum-sub-array.md": {
 	id: "53-maximum-sub-array.md";
   slug: "53-maximum-sub-array";

@@ -1,6 +1,6 @@
 ---
 title: '53. Maximum Sub Array'
-description: 'Here is a sample of some basic Markdown syntax that can be used when writing Markdown content in Astro.'
+description: ''
 pubDate: '3/4/2024'
 heroImage: '/blog-placeholder-1.jpg'
 ---
@@ -29,9 +29,9 @@ return maxSum
 
 <br> The idea of our approach is while looping through the numbers array : 
 
-1. Compute the current sum of the subarray and store it into `curSum`
+ 1. Compute the current sum of the subarray and store it into `curSum`
 
-2. Update `maxSum` in each iteration.
+ 2. Update `maxSum` in each iteration.
 
 Let's first implement code to compute the current sum. In my opinion this is the hardest / most crucial part of understanding in this problem. It took me several videos and minutes staring at code to understand it. 
 
