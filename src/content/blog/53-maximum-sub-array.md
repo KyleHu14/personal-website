@@ -5,11 +5,11 @@ pubDate: '3/4/2024'
 heroImage: '/blog-placeholder-1.jpg'
 ---
 
-Brute Force Approach : 
-for each element in the array compute the sums of all sub arrays that would use the current element. 
+##### Introduction | [Link](https://leetcode.com/problems/maximum-subarray/description/)
+This problem asks you to find a sub sequence of digits in the input array that, when summed, yields the maximum sum amongst all possible sub sequences. I think this problem isn't too difficult and the solution is relatively straightforward to understand.
 
-Linear Approach : 
-Personally, I think the first stepping stone when looking at this problem is that subarrays are just consecutive numbers. this means that we want to preserve the order of the original numbers array when calculating the sub array. Therefore, the first step would be to traverse the numbers list linearly. 
+##### Solution Walkthrough
+Notice that subarrays in this problem are consecutive numbers with their original order preserved. We cannot manipulate the original array through sorting or any other means. Therefore, the first step would be to traverse the numbers list linearly.  
 
 ```python
 for num in numbers:
@@ -19,70 +19,81 @@ for num in numbers:
 <br/>Now that we have a loop, we are going to need to track the max sum as we loop through the list. I'm going to create two variables called `maxSum` and `curSum`.
 
 ```python
-    maxSum = 0 # Tracks the maximum sum that will be returned at the end
-    curSum = 0 # Tracks the current sum of the subArray that we are checking
-    for num in numbers: 
-        # code here
+maxSum = 0 
+curSum = 0
+for num in numbers: 
+    # code here
 
-    return maxSum 
+return maxSum 
 ```
 
-We are actually almost done with the linear approach. Now we need to :
+<br> The idea of our approach is while looping through the numbers array : 
 
-#1 Compute the current sum of the subarray and store it into `curSum`
+1. Compute the current sum of the subarray and store it into `curSum`
 
-#2 Update `maxSum` in each iteration
+2. Update `maxSum` in each iteration.
 
-Let's first look at step 1. In my opinion step 1 is the hardest / most crucial part to understand in this problem. It took me several videos and minutes staring at code to understand this part. In order to compute the sum of a sub array, we need to add it to `curSum` for each iteration. 
+Let's first implement code to compute the current sum. In my opinion this is the hardest / most crucial part of understanding in this problem. It took me several videos and minutes staring at code to understand it. 
+
+We can start computing the current sum of the sub array by adding the current number of the numbers array to `curSum` in each iteration. 
 
 ```python
-    maxSum = 0 # Tracks the maximum sum that will be returned at the end
-    curSum = 0 # Tracks the current sum of the subArray that we are checking
-    for num in numbers: 
-        curSum += num
+maxSum = 0 
+curSum = 0 
+for num in numbers: 
+    curSum += num
 
-    return maxSum 
+return maxSum 
 ```
 
-However, our solution isn't this straightforward. There is one tricky part to this problem. How do we know where a subarray begins or ends? We can't just keep adding to curSum since that only gives us the sum of the numbers array. To answer this question, we can break down what kinds of sub array sums we are looking for. In this case, it makes sense to be interested in positive sums. If we `curSum` is negative, that means that the current sub array is not worth tracking.
+<br> But how do we know where a subarray begins or ends? We can't just keep adding to curSum since that only gives us the entire sum of the numbers array. To answer this question, we can break down what kinds of sums we are looking for. In this case, it makes sense to be interested in positive sums. If we `curSum` is negative, that means that the current sub array is not worth tracking.
 
 ```python
-    maxSum = 0 # Tracks the maximum sum that will be returned at the end
-    curSum = 0 # Tracks the current sum of the subArray that we are checking
-    for num in numbers: 
-        if curSum < 0:
-            curSum = 0
-        curSum += num
+maxSum = 0 
+curSum = 0 
+for num in numbers: 
+    # Computing current sum
+    if curSum < 0:
+        curSum = 0
+    curSum += num
 
-    return maxSum 
+    # Updating max sum
+
+return maxSum 
 ```
 
-Now we can move to step 2 : how do we update `maxSum`? When it comes to tracking a max of an array, we can usually take the max of the current max sum and the current sum that we have calculated.
+<br>Now we can move to updating the max sum. When it comes to tracking a max of an array, we can take the maximum value of `maxSum` and `curSum`. `maxSum` will either be itself, or the sum of a bigger sub array.
 
 ```python
-    maxSum = 0 # Tracks the maximum sum that will be returned at the end
-    curSum = 0 # Tracks the current sum of the subArray that we are checking
-    for num in numbers: 
-        if curSum < 0:
-            curSum = 0
-        curSum += num
-        maxSum = max(maxSum, curSum)
+maxSum = 0 
+curSum = 0 
+for num in numbers: 
+    # Computing current sum
+    if curSum < 0:
+        curSum = 0
+    curSum += num
 
-    return maxSum 
+    # Updating max sum
+    maxSum = max(maxSum, curSum)
+
+return maxSum 
 ```
 
-There is one last problem to this code and that lies in the initialization of `maxSum`. This code does not work for arrays whose largest sum is less than 0. Therefore we need to adjust the initialization of `maxSum` to reflect that. 
+<br>There is one last problem to this code and that lies in the initialization of `maxSum`. You could also say that this is an edge case. Our code so far assumes that the numbers array at least has one positive integer. However, this code does not work for arrays with only negative numbers. Therefore we need to adjust the initialization of `maxSum` to reflect that. 
 
 ```python
-    maxSum = numbers[0] # Tracks the maximum sum that will be returned at the end
-    curSum = 0 # Tracks the current sum of the subArray that we are checking
-    for num in numbers: 
-        if curSum < 0:
-            curSum = 0
-        curSum += num
-        maxSum = max(maxSum, curSum)
+maxSum = numbers[0] 
+curSum = 0 
+for num in numbers: 
+    # Computing current sum
+    if curSum < 0:
+        curSum = 0
+    curSum += num
 
-    return maxSum 
+    # Updating max sum
+    maxSum = max(maxSum, curSum)
+
+return maxSum 
 ```
 
-The code above is the final solution that linearly traverses numbers and returns the maxSum. 
+<br>This fixes the edge case since when calculating the maximum sub array of an array with only negative numbers, the max sum will always be a single negative number. Computing sums with a sub array length of more than one will only yield a smaller sum than just checking the minimum of the array. This fix essentially makes it so that our function will also calculate the minimum value of an array with only negative numbers.

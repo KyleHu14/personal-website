@@ -2,6 +2,7 @@
 // You can import this data from anywhere in your site by using the `import` keyword.
 
 export const SITE_TITLE = "Kyle Hu";
+export const BLOG_SITE_TITLE = "Kyle Hu | Blog";
 export const SITE_DESCRIPTION = "";
 
 // Social Links
