@@ -1,0 +1,20 @@
+---
+title: "108. Convert Sorted Array to Binary Search Tree"
+description: ""
+pubDate: "3/13/2024"
+heroImage: ""
+---
+
+import Figure from "../../components/Figure/Figure.tsx";
+
+##### Introduction | [Link](https://leetcode.com/problems/convert-sorted-array-to-binary-search-tree/description/)
+
+This is a divide and conquer problem that asks us to take an array and convert it into a binary tree.
+
+##### Explaining the Approach
+
+The problem asks us to build a <ins>height-balanced binary search tree</ins> given an array of sorted integers. Let's first define a <ins>height-balanced binary search tree</ins>. According to leetcode, "A height-balanced binary tree is a binary tree in which the depth of the two subtrees of every node never differs by more than one." This essentially means that a node's two children cannot have heights that depths that differ more than by one.
+
+<Figure src="/108-convert-arr-btree/hb-tree-1.PNG" alt="" caption=""></Figure>
+
+The image above illustrates a height-balanced binary tree (figure 1). If you count the depths of each child, there will be at most a depth difference of 1 in figure 1. However in figure 2, we can see that the depth of C is 2, whereas the depth of B is 0. In figure 2 there is a depth difference of at least 2 between children C and B. Therefore figure 2 is not height balanced.

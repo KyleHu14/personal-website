@@ -136,6 +136,13 @@ declare module 'astro:content' {
 
 	type ContentEntryMap = {
 		"blog": {
+"108-convert-arr-btree.mdx": {
+	id: "108-convert-arr-btree.mdx";
+  slug: "108-convert-arr-btree";
+  body: string;
+  collection: "blog";
+  data: InferEntrySchema<"blog">
+} & { render(): Render[".mdx"] };
 "198-house-robber.md": {
 	id: "198-house-robber.md";
   slug: "198-house-robber";
