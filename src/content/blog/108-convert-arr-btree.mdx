@@ -11,10 +11,120 @@ import Figure from "../../components/Figure/Figure.tsx";
 
 This is a divide and conquer problem that asks us to take an array and convert it into a binary tree.
 
-##### Explaining the Approach
+##### Defining a Height Balanced Search Tree
 
-The problem asks us to build a <ins>height-balanced binary search tree</ins> given an array of sorted integers. Let's first define a <ins>height-balanced binary search tree</ins>. According to leetcode, "A height-balanced binary tree is a binary tree in which the depth of the two subtrees of every node never differs by more than one." This essentially means that a node's two children cannot have heights that depths that differ more than by one.
+The problem asks us to build a <ins>height-balanced binary search tree(HBST)</ins> given an array of sorted integers. Let's first define a binary tree. All a binary tree is a data structure with a root node and two child nodes. The left child must be less than the root whereas the right child must be greater.
 
-<Figure src="/108-convert-arr-btree/hb-tree-1.PNG" alt="" caption=""></Figure>
+Let's now define a HBST. According to leetcode, "A height-balanced binary tree is a binary tree in which the depth of the two subtrees of every node never differs by more than one." This essentially means that a node's two children cannot have heights that depths that differ more than by one.
 
-The image above illustrates a height-balanced binary tree (figure 1). If you count the depths of each child, there will be at most a depth difference of 1 in figure 1. However in figure 2, we can see that the depth of C is 2, whereas the depth of B is 0. In figure 2 there is a depth difference of at least 2 between children C and B. Therefore figure 2 is not height balanced.
+<Figure src="/108-convert-arr-btree/hb-tree-1.PNG"></Figure>
+
+In the image above there are two binary search trees with their depths written next to each node. We can see that figure 1 is a HBST since nodes C and D have a depth difference of only 1. Within figure 2, nodes C and B have a depth difference of 2. Therefore, figure 2 is NOT a HBST.
+
+##### Intuition
+
+Given the examples, we can build a binary tree using the following process :
+
+1. Find the median element of the array and set it as the root
+2. If the len(array) is even, we can choose either median
+3. Split the array into 2 halves
+4. Recursively solve the 2 halves by repeating the approach in step 1
+
+Let's look at example 1 in the problem's description.
+
+<Figure src="/108-convert-arr-btree/intuition-1.PNG"></Figure>
+
+We break down the initial array [-10, -3, 0, 5, 9] into sub problems. We can think of each node being assigned a sub array and needing to decide which value is going to be the root value.
+
+##### Implementing the Solution
+
+Given the nature of this problem, recursion (at least for me) is the approach that would make the most sense. The idea of dividing a problem into multiple sub problems and solving them is the perfect oppurtunity to use recursion.
+
+Let's first implement the step 1 and 2 of the solution outlined in the intuition which is to find the median of the array and set it as the root.
+
+```python
+class Solution:
+    def recur(self, nums: List[int]):
+        mid_index = len(nums) // 2
+        root = TreeNode(val=nums[mid_index])
+
+    def sortedArrayToBST(self, nums: List[int]) -> Optional[TreeNode]:
+        return self.recur(nums)
+```
+
+We now have the root, all that's left of the core logic is to split the nums list into two halves and recursively solve. We also need to return the root itself. Note that I have written variable names for each step of the process to make understanding the code easier.
+
+```python
+class Solution:
+    def recur(self, nums: List[int]):
+        mid_index = len(nums) // 2
+        root = TreeNode(val=nums[mid_index])
+
+        left_half = nums[0:mid]
+        right_half = nums[mid+1:]
+
+        left_child = self.recur(left_half)
+        right_child = self.recur(right_half)
+
+        root.left = left_child
+        root.right = right_child
+
+        return root
+
+    def sortedArrayToBST(self, nums: List[int]) -> Optional[TreeNode]:
+        return self.recur(nums)
+```
+
+Now we need to think of the base cases. If we look at the image in example 1, we can see that at the bottom layer the list is broken into lists with lengths of 1. If our recursive function receives a list with a length of 1, we only need to return a node with `nums[0]` as the value.
+
+```python
+class Solution:
+    def recur(self, nums: List[int]):
+        if len(nums) == 1:
+            return TreeNode(val=nums[0])
+
+        mid_index = len(nums) // 2
+        root = TreeNode(val=nums[mid_index])
+
+        left_half = nums[0:mid]
+        right_half = nums[mid+1:]
+
+        left_child = self.recur(left_half)
+        right_child = self.recur(right_half)
+
+        root.left = left_child
+        root.right = right_child
+
+        return root
+
+    def sortedArrayToBST(self, nums: List[int]) -> Optional[TreeNode]:
+        return self.recur(nums)
+```
+
+We are almost done but we are forgetting one more edge case. If we run our code as it is now we will get an error complaining that `nums` has a length of 0. This occurs if our recursive function receives a list that has a length of 2. 1 of the values in the list becomes the root whereas the other value becomes either the left or right half. This means that one of the halves will be empty. In the case we give an empty half to our recursive function, we can just return None.
+
+```python
+class Solution:
+    def recur(self, nums: List[int]):
+        if len(nums) == 1:
+            return TreeNode(val=nums[0])
+        elif len(nums) == 0:
+            return None
+
+        mid_index = len(nums) // 2
+        root = TreeNode(val=nums[mid_index])
+
+        left_half = nums[0:mid]
+        right_half = nums[mid+1:]
+
+        left_child = self.recur(left_half)
+        right_child = self.recur(right_half)
+
+        root.left = left_child
+        root.right = right_child
+
+        return root
+
+    def sortedArrayToBST(self, nums: List[int]) -> Optional[TreeNode]:
+        return self.recur(nums)
+```
