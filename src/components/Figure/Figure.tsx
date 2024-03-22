@@ -6,10 +6,12 @@ interface FigureProps {
 	caption: string;
 }
 
+import css from "./Figure.module.css";
+
 // prettier-ignore
 export default function Figure({src, alt, width, height, caption} : FigureProps ) {
     return(
-        <figure>
+        <figure className={css.figureContainer}>
             <img src={src}></img>
             <figcaption className="text-lg">{caption}</figcaption>
         </figure>

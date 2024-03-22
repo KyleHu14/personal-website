@@ -1,0 +1,124 @@
+---
+title: "202. Happy Number"
+description: ""
+pubDate: "3/21/2024"
+heroImage: ""
+---
+
+import Figure from "../../components/Figure/Figure.tsx";
+
+##### Introduction | [Link](https://leetcode.com/problems/happy-number/description/)
+
+This is a two pointer problem that asks us to figure out if a number is a "happy number." There is another way to solve this problem, but I wanted to practice using two pointers, so I will be showing the two pointer solution for this problem.
+
+##### The Cycle Property of Happy Numbers
+
+The problem asks us to identify if a given number `n` is a happy number or not. A happy number is the sum of a number's individual squared digits. Initially, I couldn't really see how two pointers can be applied to this problem.
+
+To see how two pointers apply, notice that the description states that non happy numbers will **cycle**. Take any number `n` that is NOT a happy number and keep calculating the sum of the square of its digits. Let's take 2 for example.
+
+```
+2 : 2^2 = 4
+
+4 : 4^2 = 16
+
+16 : 1^2 + 6^2 = 37
+
+37 : 3^2 + 7^2 = 58
+
+58 : 5^2 + 8^2 = 89
+
+89 : 8^2 + 9^2 = 145
+
+145 : 1^2 + 4^2 + 5^2 = 42
+
+42 : 4^2 + 2^2 = 20
+
+20 : 2^2 = 2
+```
+
+We can use two pointers to identify if a number `n` is a happy number by exploring the sum of its squared digits.
+
+##### Intuition
+
+The technique that we will employ in this solution is called the Floyd's tortoise and hare algorithm. The idea is that one pointer will move one node at a time whereas the second pointer will move two spaces at a time. If there is a cycle, the two pointers will intersect at one point.
+
+<Figure src="/202-happy-number/tortoise-hare.PNG"></Figure>
+
+In the above example, the blue pointer traverses the cycle by 1 whereas the fast pointer traverses the cycle by 2. We can see the pointers intersect at node D which confirms that graph ABCD is a cycle.
+
+##### Implementing the Solution
+
+Let's first implement a function that can calculate the sum of a number's squared digits.
+
+```python
+class Solution:
+    def getSumSquare(self, number: int) -> int:
+        square = 0
+        for digit in str(number):
+            square += int(digit) * int(digit)
+        return square
+
+    def isHappy(self, n: int) -> bool:
+        return
+```
+
+Now let's start implementing the solution. Floyd's algorith calls for two pointers that are initialized as `f(x0)` and `f(f(x0))`. In our code's terms, we can replace `f()` as `getSumSquare()` and `x0` and `n`.
+
+```python
+class Solution:
+    def getSumSquare(self, number: int) -> int:
+        square = 0
+        for digit in str(number):
+            square += int(digit) * int(digit)
+        return square
+
+    def isHappy(self, n: int) -> bool:
+        slowPointer = self.getSumSquare(n)
+        fastPointer = self.getSumSquare(self.getSumSquare(n))
+
+        return
+```
+
+Now let's first create a while loop. We don't have to worry about the condition just yet. Let's first focus on the body of the loop. We know that in the while loop we need to constantly update our pointers.
+
+```python
+class Solution:
+    def getSumSquare(self, number: int) -> int:
+        square = 0
+        for digit in str(number):
+            square += int(digit) * int(digit)
+        return square
+
+    def isHappy(self, n: int) -> bool:
+        slowPointer = self.getSumSquare(n)
+        fastPointer = self.getSumSquare(self.getSumSquare(n))
+
+        while :
+            slowPointer = self.getSumSquare(slowPointer)
+            fastPointer = self.getSumSquare(self.getSumSquare(fastPointer))
+
+        return
+```
+
+Now the most important part : what should the condition of the while loop be? To answer this, we need to first determine at what point do we know if `n` is a happy number. `N` is a happy number when the process of finding the sum of squared digits results in a 1 or results in a cycle. Let us update the while loop's conditions to reflect that. We can also add the final return statement too.
+
+```python
+class Solution:
+    def getSumSquare(self, number: int) -> int:
+        square = 0
+        for digit in str(number):
+            square += int(digit) * int(digit)
+        return square
+
+    def isHappy(self, n: int) -> bool:
+        slowPointer = self.getSumSquare(n)
+        fastPointer = self.getSumSquare(self.getSumSquare(n))
+
+        # While either of the 2 conditions are not met
+        while fastPointer != 1 and fastPointer != slowPointer:
+            slowPointer = self.getSumSquare(slowPointer)
+            fastPointer = self.getSumSquare(self.getSumSquare(fastPointer))
+
+        return fastPointer == 1
+```
