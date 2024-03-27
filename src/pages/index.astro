@@ -1,9 +1,10 @@
 ---
 import BaseHead from '../components/BaseHead.astro';
-import Footer from '../components/Footer.astro';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 
 import Header from "../components/Header/Header"
+import HorizontalLine from '../components/HorizontalLine/HorizointalLine';
+import SocialLinks from '../components/SocialLinks/SocialLinks';
 ---
 
 <!doctype html>
@@ -15,25 +16,32 @@ import Header from "../components/Header/Header"
 		<main>
 			<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
 			<Header />
+			<HorizontalLine marginValue='2'/>
 			<div class="main-body text-left mt-10">
 				<div class="text-4xl mb-3">Hello! My name is Kyle.</div>
 				<p>
 					I'm a programmer who focuses on web development using TypeScript, React, and Supabase. 
-					This website serves as my portfolio and where I post blog posts. As of now,
+					This website serves as my portfolio and my blog. As of now,
 					I plan to post my leetcode solutions and development logs of my personal projects.
 					Thank you for visiting.
 				</p>
 
-				<div class="text-3xl mb-3">My Projects</div>
-				<div class="text-2xl">Job Tracker | <a href="https://github.com/KyleHu14/job-tracker">Link</a></div>
-				<p>
-                    A web application that can track your job applications.
-                </p>
+				<SocialLinks />
 				
-				<div class="text-2xl">Theta Website | <a href="https://github.com/KyleHu14/theta-website">Link</a> </div>
-                <p>
-                    A website built for a sorority at UCI.
-                </p>
+				<HorizontalLine marginValue="10"/>
+				<div>
+					<div class="text-3xl mb-5">My Projects</div>
+					<div class="text-2xl">Job Tracker | <a href="https://github.com/KyleHu14/job-tracker">Link</a></div>
+					<p>
+						A web application that can track your job applications.
+					</p>
+					
+					<div class="text-2xl">Theta Website | <a href="https://github.com/KyleHu14/theta-website">Link</a> </div>
+					<p>
+						A website built for a sorority at UCI.
+					</p>
+				</div>
+				
 			</div>
 			
 		</main>
