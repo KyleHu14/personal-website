@@ -136,9 +136,23 @@ declare module 'astro:content' {
 
 	type ContentEntryMap = {
 		"blog": {
+"1-twosum.mdx": {
+	id: "1-twosum.mdx";
+  slug: "1-twosum";
+  body: string;
+  collection: "blog";
+  data: InferEntrySchema<"blog">
+} & { render(): Render[".mdx"] };
 "108-convert-arr-btree.mdx": {
 	id: "108-convert-arr-btree.mdx";
   slug: "108-convert-arr-btree";
+  body: string;
+  collection: "blog";
+  data: InferEntrySchema<"blog">
+} & { render(): Render[".mdx"] };
+"15-threesum.mdx": {
+	id: "15-threesum.mdx";
+  slug: "15-threesum";
   body: string;
   collection: "blog";
   data: InferEntrySchema<"blog">

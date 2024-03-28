@@ -1,0 +1,69 @@
+---
+title: "15. 3 Sum"
+description: ""
+pubDate: "3/27/2024"
+heroImage: ""
+---
+
+import Figure from "../../components/Figure/Figure.tsx";
+
+##### Introduction | [Link](https://leetcode.com/problems/3sum/)
+
+This is a two pointer problem that asks us to find three numbers that sum to the target parameter given an array. I would suggest reviewing 2sum problems before attempting to solve this. I personally struggled with this problem quite a bit so take your time when trying to understand 3sum.
+
+##### Intuition
+
+Given a list, the problem asks us to return all unique triplets that sum to 0. This problem is quite similar to 2 sum but we need to make some adjustments to our algorithm. This explanation assumes that the reader understands the two pointer approach to 2 sum.
+
+The first part of all nSum problems is to think how we can break it down to a n-1 sum problem. In our case we need to think of how to break down a 3 sum problem into a 2 sum problem. For example let's take a look at the following example case :
+
+1. Say that we're looping through the nums array and our looping variable is called `firstIndex`
+2. We can initialize two more variables called `secondIndex` and `thirdIndex`
+3. `secondIndex` will be `firstIndex` + 1
+4. `thirdIndex` will be the last index of the nums array
+5. For each `firstIndex`, we will find all unique corresponding `secondIndex`s and `thirdIndex`s that together sums to 0
+
+Notice that at #5 we are breaking the 3 sum problem into a 2 sum problem. Below is also psudocode that outlines the steps above. I have omitted the full implementation of #5 as I want to first give a general of the solution.
+
+```python
+numsLen = len(nums)
+triplets = set()
+
+for firstIndex in numsLen - 2:
+    secondIndex = firstIndex + 1
+    thirdIndex = numsLen - 1
+
+    # Abstracted, we will implement this later
+    allCombinations = findAllCombinations(firstIndex, secondIndex, thirdIndex)
+    triplets.add( allCombinations )
+```
+
+##### Implementing the Solution
+
+Let's start implementing our solution. Let's first initialize some base variables. We also need to sort the nums list before processing nums.
+
+```python
+class Solution:
+    def threeSum(self, nums: List[int]) -> List[List[int]]:
+        nums.sort()
+        triplets = set()
+        numLen = len(nums)
+
+        return triplets
+```
+
+Let's now bring the psudocode into our solution. Let's first initialize our for loop.
+
+```python
+class Solution:
+    def threeSum(self, nums: List[int]) -> List[List[int]]:
+        nums.sort()
+        triplets = set()
+        numLen = len(nums)
+
+        for firstIndex in range(numLen - 2):
+            secondIndex = firstIndex + 1
+            thirdIndex = numsLen - 1
+
+        return triplets
+```
