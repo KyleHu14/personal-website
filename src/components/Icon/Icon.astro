@@ -1,0 +1,13 @@
+---
+import socialIcons from "../../../socialIcons"
+
+type SocialIconKey = keyof typeof socialIcons
+
+export interface Props {
+    icon: SocialIconKey 
+}
+
+const { icon } = Astro.props
+---
+
+<Fragment set:html={socialIcons[icon]} />

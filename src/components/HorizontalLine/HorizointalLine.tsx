@@ -1,10 +1,6 @@
-interface HorizontalLineProps {
-	marginValue: string;
-}
-
-export default function HorizontalLine({ marginValue }: HorizontalLineProps) {
+export default function HorizontalLine() {
 	return (
-		<div className={`max-w-3xl mx-auto my-${marginValue}`}>
+		<div className="max-w-3xl mx-auto">
 			<hr className="border-gray-600" />
 		</div>
 	);

@@ -20,6 +20,12 @@
 		0 8px 24px rgba(var(--gray), 33%), 0 16px 32px rgba(var(--gray), 33%);
 }
 
+svg.icon-tabler {
+	@apply inline-block h-6 w-6 scale-125 fill-transparent 
+    stroke-current stroke-2 opacity-90 group-hover:fill-transparent 
+    sm:scale-110;
+}
+
 body {
 	/* @apply font-mono; */
 	/* font-family: "Atkinson", sans-serif; */
