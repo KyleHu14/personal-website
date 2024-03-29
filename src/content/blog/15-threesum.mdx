@@ -52,7 +52,7 @@ class Solution:
         return triplets
 ```
 
-Let's now bring the psudocode into our solution. Let's first initialize our for loop.
+Let's now bring the psudocode into our solution. Let's first initialize `secondIndex` and `thirdIndex` our for loop.
 
 ```python
 class Solution:
@@ -64,6 +64,140 @@ class Solution:
         for firstIndex in range(numLen - 2):
             secondIndex = firstIndex + 1
             thirdIndex = numsLen - 1
+
+        return triplets
+```
+
+It's at this point where we need to think how we can compute all possible combinations of `nums[secondIndex] + nums[thirdIndex] = target - nums[firstIndex]`. We can translate this into a two sum problem with the following code below. For this code we will assume that we have initialized first, second, and third index.
+
+```python
+while secondIndex < thirdIndex:
+    potentialSum = nums[firstIndex] + nums[secondIndex] + nums[thirdIndex]
+
+    if potentialSum == target:
+        triplets.add( (nums[firstIndex], nums[secondIndex], nums[thirdIndex]) )
+        secondIndex += 1
+        thirdIndex -= 1
+
+    elif potentialSum > 0:
+        thirdIndex -= 1
+
+    elif potentialSum < 0:
+        secondIndex += 1
+```
+
+Looking at the code above, you can see that we are searching between the range of `secondIndex` and `thirdIndex` for any group of numbers that when summed with `firstIndex` will equal the target sum. Now that we have written this code, we can put it into our function with some adjustments.
+
+```python
+class Solution:
+    def threeSum(self, nums: List[int]) -> List[List[int]]:
+        nums.sort()
+        triplets = set()
+        numLen = len(nums)
+
+        for firstIndex in range(numLen - 2):
+            secondIndex = firstIndex + 1
+            thirdIndex = numLen - 1
+
+            # Search code added
+            while secondIndex < thirdIndex:
+                potentialSum = nums[firstIndex] + nums[secondIndex] + nums[thirdIndex]
+
+                if potentialSum == 0:
+                    triplets.add( (nums[firstIndex], nums[secondIndex], nums[thirdIndex]) )
+                    secondIndex += 1
+                    thirdIndex -= 1
+
+                elif potentialSum > 0:
+                    thirdIndex -= 1
+
+                elif potentialSum < 0:
+                    secondIndex += 1
+
+        return triplets
+```
+
+The above code is sufficient as a solution, but there is still one more optimization we can make. In some cases, we may have duplicates of the same values in a sorted nums list. For example let's say we have the list : [-4, -1, -1, -1, 0, 1, 2, 2].
+
+<Figure src="/15-three-sum/optimize-1.PNG"></Figure>
+
+We can see that once `firstIndex` is done processing all combinations of the first -1, we encounter another duplicate of -1. In iteration 2 and 3 `firstIndex` are both -1. Furthermore, notice that the range that is searched in iteration 2 encompasses the range of iteration 3. This means that if we are to search for all combinations in iteration 3, we are performing redundant computation.
+
+```python
+class Solution:
+    def threeSum(self, nums: List[int]) -> List[List[int]]:
+        nums.sort()
+        triplets = set()
+        numLen = len(nums)
+
+        for firstIndex in range(numLen - 2):
+            secondIndex = firstIndex + 1
+            thirdIndex = numLen - 1
+
+            # Skip the firstIndex if its a duplicate
+            if firstIndex > 0 and nums[firstIndex] == nums[firstIndex - 1]:
+                continue
+
+            while secondIndex < thirdIndex:
+                potentialSum = nums[firstIndex] + nums[secondIndex] + nums[thirdIndex]
+
+                if potentialSum == 0:
+                    triplets.add( (nums[firstIndex], nums[secondIndex], nums[thirdIndex]) )
+                    secondIndex += 1
+                    thirdIndex -= 1
+
+                elif potentialSum > 0:
+                    thirdIndex -= 1
+
+                elif potentialSum < 0:
+                    secondIndex += 1
+
+        return triplets
+```
+
+We can also make the same optimization for `secondIndex` and `thirdIndex`.
+
+<Figure src="/15-three-sum/optimize-2.PNG"></Figure>
+
+In this example, we can see that there are reptitions of -1 and 2. As of now, `secondIndex` and `thirdIndex` will loop through the repeated -1 and 2 in the nums list. An optimization that we can make is to skip these repeated numbers. We can do this by adding two while loops into our code.
+
+```python
+class Solution:
+    def threeSum(self, nums: List[int]) -> List[List[int]]:
+        nums.sort()
+        print(nums)
+        triplets = set()
+        numLen = len(nums)
+
+        for firstIndex in range(numLen - 2):
+            secondIndex = firstIndex + 1
+            thirdIndex = numLen - 1
+
+            if firstIndex > 0 and nums[firstIndex] == nums[firstIndex - 1]:
+                continue
+
+            while secondIndex < thirdIndex:
+                potentialSum = nums[firstIndex] + nums[secondIndex] + nums[thirdIndex]
+
+                if potentialSum == 0:
+                    triplets.add( (nums[firstIndex], nums[secondIndex], nums[thirdIndex]) )
+                    secondIndex += 1
+                    thirdIndex -= 1
+
+                    # While loops added!
+                    # Note : Make sure the while condition is one line
+                    while secondIndex < thirdIndex and
+                          nums[secondIndex] == nums[secondIndex - 1]:
+                        secondIndex += 1
+
+                    while secondIndex < thirdIndex and
+                          nums[thirdIndex] == nums[thirdIndex + 1]:
+                        thirdIndex -= 1
+
+                elif potentialSum > 0:
+                    thirdIndex -= 1
+                else:
+                    secondIndex += 1
 
         return triplets
 ```
