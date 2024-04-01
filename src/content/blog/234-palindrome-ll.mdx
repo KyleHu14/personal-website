@@ -12,88 +12,146 @@ This problem asks us to determine if a linked list is a palindrome. What makes t
 
 ##### Verifying Palindromes
 
-Normally with a list / array, we can just check the 1st value and the nth value sequentially until we determine whether or not the given list / array is a palindrome. But with a linked list we cannot do that.
+Normally with a list / array, we can just check the 1st value and the nth value sequentially until we determine whether or not the given list / array is a palindrome. In terms of a linked list, this would be looping through two linked lists. With both linked list representing the 1st and 2nd half of the linked list.
 
-##### Intuition
+The next question is how do we extract the 2nd half of a linked list? We need to first obtain a pointer that points to the middle of a linked list. A brute force method of doing this would be :
 
-The technique that we will employ in this solution is called the Floyd's tortoise and hare algorithm. The idea is that one pointer will move one node at a time whereas the second pointer will move two spaces at a time. If there is a cycle, the two pointers will intersect at one point.
+1. Loop until the end of the linked list to count the length
+2. Loop again until we are at the n/2 node of the linked list
 
-<Figure src="/202-happy-number/tortoise-hare.PNG"></Figure>
+The brute force method works fine, however there is a two pointer method as well.
 
-In the above example, the blue pointer traverses the cycle by 1 whereas the fast pointer traverses the cycle by 2. We can see the pointers intersect at node D which confirms that graph ABCD is a cycle.
+1. Initialize two pointers p1 and p2
+2. p1 will move at a pace of 1, whereas p2 will move at a pace of 2
+3. Once p2 reaches the end of the linked list, p1 will be at the middle of the linked list
+
+There is one more problem. When p2 reaches the end, p1 will be at the middle of the linked list. We can't use p1 since we want to be able to look through the 2nd half of the linked list from the end. Therefore we will need to reverse the 2nd half of the linked list using p1.
+
+##### Solution
+
+Let's now apply the context to an actual solution.
+
+1. Initialize two pointers `slowPointer` and `fastPointer`
+2. Loop through the linked list with `slowPointer` incrementing by 1 and `fastPointer` incrementing by 2
+3. Reverse the 2nd half of the linked list with `slowPointer`
+4. Iteratively compare the 1st half of the linked list and the reversed 2nd half of the linked list to determine if the given linked list is a palindrome
 
 ##### Implementing the Solution
 
-Let's first implement a function that can calculate the sum of a number's squared digits.
+Let's first get the 2nd half of the linked list
 
 ```python
 class Solution:
-    def getSumSquare(self, number: int) -> int:
-        square = 0
-        for digit in str(number):
-            square += int(digit) * int(digit)
-        return square
+    def isPalindrome(self, head: Optional[ListNode]) -> bool:
+        slowPointer = head
+        fastPointer = head
 
-    def isHappy(self, n: int) -> bool:
-        return
+        while fastPointer and fastPointer.next:
+            # slowPointer moves by 1
+            slowPointer = slowPointer.next
+            # fastPointer moves by 2
+            fastPointer = fastPointer.next.next
 ```
 
-Now let's start implementing the solution. Floyd's algorith calls for two pointers that are initialized as `f(x0)` and `f(f(x0))`. In our code's terms, we can replace `f()` as `getSumSquare()` and `x0` and `n`.
+Now that `slowPointer` points to the middle of the linked list, we now need to reverse it.
+
+To reverse a linked list, we need to first initialize 3 variables : `current`, `prev`, and `nextCurrent`. `Current` equals to the start of the linked list, `prev` will be initialized as None, and `nextCurrent` will be the next value of `current`.
+
+<Figure src="/234-palindrome-ll/rev-1.PNG"></Figure>
+
+Now, let's make current's next value as `prev`.
+
+<Figure src="/234-palindrome-ll/rev-2.PNG"></Figure>
+
+Now, we need to make `prev` equal to current.
+
+<Figure src="/234-palindrome-ll/rev-3.PNG"></Figure>
+
+Lastly, we need to update `current` as `nextCurrent`. We also need to update the `nextCurrent` variable too.
+
+<Figure src="/234-palindrome-ll/rev-4.PNG"></Figure>
+
+We will repeat this process until current is null. By the end of the process, `prev` will point to our reversed linked list. Let's now implement a reverse function.
 
 ```python
 class Solution:
-    def getSumSquare(self, number: int) -> int:
-        square = 0
-        for digit in str(number):
-            square += int(digit) * int(digit)
-        return square
+    def reverse_linked_list(self, head: ListNode) -> ListNode:
+        prev = None
+        current = head
+        while current:
+            next_current = current.next
+            current.next = prev
+            prev = current
+            current = next_current
+        return prev
 
-    def isHappy(self, n: int) -> bool:
-        slowPointer = self.getSumSquare(n)
-        fastPointer = self.getSumSquare(self.getSumSquare(n))
+    def isPalindrome(self, head: Optional[ListNode]) -> bool:
+        slowPointer = head
+        fastPointer = head
 
-        return
+        while fastPointer and fastPointer.next:
+            # slowPointer moves by 1
+            slowPointer = slowPointer.next
+            # fastPointer moves by 2
+            fastPointer = fastPointer.next.next
 ```
 
-Now let's first create a while loop. We don't have to worry about the condition just yet. Let's first focus on the body of the loop. We know that in the while loop we need to constantly update our pointers.
+The reason we check if `fastPointer` and `fastPointer.next` exists is because we want to only run this loop if we can perform the operation `fastPointer.next.next` without any errors. Now that we hhave implemented the reverse function, let's use our function to reverse the 2nd half of the linked list.
 
 ```python
 class Solution:
-    def getSumSquare(self, number: int) -> int:
-        square = 0
-        for digit in str(number):
-            square += int(digit) * int(digit)
-        return square
+    def reverseLinkedList(self, head: ListNode) -> ListNode:
+        prev = None
+        current = head
+        while current:
+            next_current = current.next
+            current.next = prev
+            prev = current
+            current = next_current
+        return prev
 
-    def isHappy(self, n: int) -> bool:
-        slowPointer = self.getSumSquare(n)
-        fastPointer = self.getSumSquare(self.getSumSquare(n))
+    def isPalindrome(self, head: Optional[ListNode]) -> bool:
+        slowPointer = head
+        fastPointer = head
 
-        while :
-            slowPointer = self.getSumSquare(slowPointer)
-            fastPointer = self.getSumSquare(self.getSumSquare(fastPointer))
+        while fastPointer and fastPointer.next:
+            slowPointer = slowPointer.next
+            fastPointer = fastPointer.next.next
 
-        return
+        # We have reversed the 2nd half!
+        reverseHalf = self.revrseLinkedList(slowPointer)
 ```
 
-Now the most important part : what should the condition of the while loop be? To answer this, we need to first determine at what point do we know if `n` is a happy number. `N` is a happy number when the process of finding the sum of squared digits results in a 1 or results in a cycle. Let us update the while loop's conditions to reflect that. We can also add the final return statement too.
+Now we just need to iteratively check if each corresponding value of the 1st and 2nd half are equal or not and we are done!
 
 ```python
 class Solution:
-    def getSumSquare(self, number: int) -> int:
-        square = 0
-        for digit in str(number):
-            square += int(digit) * int(digit)
-        return square
+    def reverseLinkedList(self, head: ListNode) -> ListNode:
+        prev = None
+        current = head
+        while current:
+            next_current = current.next
+            current.next = prev
+            prev = current
+            current = next_current
+        return prev
 
-    def isHappy(self, n: int) -> bool:
-        slowPointer = self.getSumSquare(n)
-        fastPointer = self.getSumSquare(self.getSumSquare(n))
+    def isPalindrome(self, head: Optional[ListNode]) -> bool:
+        slowPointer = head
+        fastPointer = head
 
-        # While either of the 2 conditions are not met
-        while fastPointer != 1 and fastPointer != slowPointer:
-            slowPointer = self.getSumSquare(slowPointer)
-            fastPointer = self.getSumSquare(self.getSumSquare(fastPointer))
+        while fastPointer and fastPointer.next:
+            slowPointer = slowPointer.next
+            fastPointer = fastPointer.next.next
 
-        return fastPointer == 1
+        reverseHalf = self.reverseLinkedList(slowPointer)
+
+        while reverseHalf:
+            if reverseHalf.val != head.val:
+                return False
+            reverseHalf = reverseHalf.next
+            head = head.next
+
+        return True
+
 ```
