@@ -15,20 +15,6 @@ import Header from '../../components/Header/Header';
 <html lang="en">
 	<head>
 		<BaseHead title={BLOG_SITE_TITLE} description={SITE_DESCRIPTION} />
-		<style>
-			main {
-				width: 720px;
-				/* max-width: calc(100% - 2em); */
-				margin: auto;
-				padding: 3em 1em;
-			}
-			ul {
-				display: flex;
-				flex-direction: column;
-				margin: 0;
-				padding: 0;
-			}
-		</style>
 	</head>
 	<body>
 		<main>
@@ -39,7 +25,13 @@ import Header from '../../components/Header/Header';
 						posts.map((post) => (
 							<li>
 								<a href={`/blog/${post.slug}/`}>
-									<div class="my-2 text-gray-700 text-xl">{post.data.title} | <FormattedDate date={post.data.pubDate} /></div>
+									<div class="my-2 text-gray-700 text-xl">
+										<div>{post.data.title}</div>
+										<div class="text-lg">
+											<FormattedDate date={post.data.pubDate} />
+										</div>
+										
+									</div>
 								</a>
 							</li>
 						))
@@ -49,3 +41,18 @@ import Header from '../../components/Header/Header';
 		</main>
 	</body>
 </html>
+
+<style>
+	main {
+		width: 720px;
+		/* max-width: calc(100% - 2em); */
+		margin: auto;
+		padding: 3em 1em;
+	}
+	ul {
+		display: flex;
+		flex-direction: column;
+		margin: 0;
+		padding: 0;
+	}
+</style>

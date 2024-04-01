@@ -1,9 +1,6 @@
 import { socialsMetaData } from "../../../config";
 import socialIcons from "../../../socialIcons";
 
-// Components
-import Icon from "../Icon/Icon.astro";
-
 export default function SocialLinks() {
 	return (
 		<div className="flex gap-1">
