@@ -171,6 +171,13 @@ declare module 'astro:content' {
   collection: "blog";
   data: InferEntrySchema<"blog">
 } & { render(): Render[".mdx"] };
+"234-palindrome-ll.mdx": {
+	id: "234-palindrome-ll.mdx";
+  slug: "234-palindrome-ll";
+  body: string;
+  collection: "blog";
+  data: InferEntrySchema<"blog">
+} & { render(): Render[".mdx"] };
 "53-maximum-sub-array.md": {
 	id: "53-maximum-sub-array.md";
   slug: "53-maximum-sub-array";

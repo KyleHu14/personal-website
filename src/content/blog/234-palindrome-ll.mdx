@@ -1,44 +1,18 @@
 ---
-title: "202. Happy Number"
+title: "234. Palindrome Linked List"
 description: ""
-pubDate: "3/21/2024"
+pubDate: "3/31/2024"
 ---
 
 import Figure from "../../components/Figure/Figure.tsx";
 
-##### Introduction | [Link](https://leetcode.com/problems/happy-number/description/)
+##### Introduction | [Link](https://leetcode.com/problems/palindrome-linked-list/description/)
 
-This is a two pointer problem that asks us to figure out if a number is a "happy number." There is another way to solve this problem, but I wanted to practice using two pointers, so I will be showing the two pointer solution for this problem.
+This problem asks us to determine if a linked list is a palindrome. What makes this problem a little challenging is the nature of linked lists where you can only traverse forward. There are multiple ways of solving this problem such as through arrays, stacks, or recursion, but I will be going through the two pointer solution.
 
-##### The Cycle Property of Happy Numbers
+##### Overview of Linked Lists
 
-The problem asks us to identify if a given number `n` is a happy number or not. A happy number is the sum of a number's individual squared digits. Initially, I couldn't really see how two pointers can be applied to this problem.
-
-To see how two pointers apply, notice that the description states that non happy numbers will **cycle**. Take any number `n` that is NOT a happy number and keep calculating the sum of the square of its digits. Let's take 2 for example.
-
-```
-2 : 2^2 = 4
-
-4 : 4^2 = 16
-
-16 : 1^2 + 6^2 = 37
-
-37 : 3^2 + 7^2 = 58
-
-58 : 5^2 + 8^2 = 89
-
-89 : 8^2 + 9^2 = 145
-
-145 : 1^2 + 4^2 + 5^2 = 42
-
-42 : 4^2 + 2^2 = 20
-
-20 : 2^2 = 2
-```
-
-We can use two pointers to identify if a number `n` is a happy number by exploring the sum of its squared digits.
-
-##### Solution
+##### Intuition
 
 The technique that we will employ in this solution is called the Floyd's tortoise and hare algorithm. The idea is that one pointer will move one node at a time whereas the second pointer will move two spaces at a time. If there is a cycle, the two pointers will intersect at one point.
 

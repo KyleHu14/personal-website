@@ -2,7 +2,6 @@
 title: '53. Maximum Sub Array'
 description: ''
 pubDate: '3/4/2024'
-heroImage: '/blog-placeholder-1.jpg'
 ---
 
 ##### Introduction | [Link](https://leetcode.com/problems/maximum-subarray/description/)
