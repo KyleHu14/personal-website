@@ -1,0 +1,116 @@
+---
+title: "283. Move Zeroes"
+description: ""
+pubDate: "4/4/2024"
+---
+
+##### Introduction | [Link](https://leetcode.com/problems/move-zeroes/description/)
+
+This is a two pointer problem that asks us to shift all zeroes to the end of a list while retaining the list's original order. This problem is listed as an easy but I struggled a bit to implement an efficient solution. Even after figuring out the intuition I wasn't able to effectively implement it.
+
+##### Solution
+
+Let's first take this example `nums = [0,1,0,3,12]` and think how we can solve it.
+
+The first step would be to look at our constraints. Problem 283 gives us the constraint of only being able to edit the list in place. We cannot make additional copies nor can we change the length of `nums`. We can only overwrite values of `nums`. Also note that we want to maintain the order of the `nums` list, this means that we can only make swaps.
+
+The constraints given tell us that we can only swap the values in `nums` to achieve our solution. Given this information, how would we solve this problem by only swapping two values in the `nums` list? When I tried to do this by hand, this was the sequence that I generated :
+
+1. [0,1,0,3,12] : Starting point
+2. [1,0,0,3,12] : Swap nums[0] (0) and nums[1] (1)
+3. [1,3,0,0,12] : Swap nums[3] (3) and nums[1] (0)
+4. [1,3,12,0,0] : Swap nums[4] (12) and nums[2] (0)
+
+Given this sequence, the next question would be what values do we need keep track of? We can answer this question with the following observations :
+
+1. We always swap a non zero digit with the last zero of the `nums` array (nums[0], nums[1], and nums[2])
+2. We always swap the first digit we encounter that comes after a zero
+
+This means that we need to keep track of the last zero in the `nums` array and the first digit that we encounter after a zero. We now have the following algorithm :
+
+1. Loop through the `nums` list
+2. For every non zero digit that we encounter, swap it with the last zero of the `nums` array
+3. Repeat until there are no more digits to process
+
+Note that this algorithm is not complete but it gives a general idea of how to solve this problem. Given this context, we can now move on to implementing the solution.
+
+##### Implementing the Solution
+
+Here is the rundown of the solution.
+
+1. Initialize one variable `zeroIndex` as 0, this will serve as a variable that will track the index of the last zero in the `nums` list
+2. Loop through the `nums` list, the looping variable will serve as our second pointer and we will use it to check for non zero digits
+3. If we encounter a non zero digit, we will swap the value at `zeroIndex` with our second pointer and increment `zeroIndex`
+
+Note that if we encounter a non zero digit without having encountered a zero beforehand, we will simply swap in place. For example given the list [1,2] our algorithm will simply swap nums[0] with nums[0] and nums[1] with nums[1].
+
+Let's first write out the basic structure of the code.
+
+```python
+class Solution:
+    def moveZeroes(self, nums: List[int]) -> None:
+        zeroIndex = 0
+        for index in range(len(nums)):
+            # Algorithm here
+```
+
+We only perform an action when we encounter a non zero digit in the list. If we encounter more zeroes, we don't want to do anything since we only update zeroIndex if we encounter a non zero digit.
+
+```python
+class Solution:
+    def moveZeroes(self, nums: List[int]) -> None:
+        zeroIndex = 0
+        for index in range(len(nums)):
+            if nums[index] != 0:
+                # Swap nums[index] with nums[zeroIndex]
+                temp = nums[index]
+                nums[index] = nums[zeroIndex]
+                nums[zeroIndex] = temp
+
+                # Increment zeroIndex
+                zeroIndex += 1
+```
+
+##### Extra Explanation
+
+If you're like me, looking at the solution wasn't enough to fully understand how the solution works. Personally, I was stuck on how exactly does only incrementing `zeroIndex` make this solution work. This section is intended to be an extra layer of explanation to explain how the solution above works. I will break this down into the following cases :
+
+##### Case 1 : Nums Has no 0s
+
+To preface, I would suggest the reader to follow along with a piece of paper or visualize each case in some form.
+
+Also note that my notation of nums[i=1] means nums[1]
+
+Let's start with the simplest case. Let's say the `nums` list has no 0s, for example [1, 2, 3] and run through the solution above.
+
+1. nums = [1, 2, 3], index = 0 , zeroIndex = 0 : we swap `nums[zeroIndex=0]` (1) with `nums[index=0]` (1), zeroIndex = 1 after the swap
+2. nums = [1, 2, 3], index = 1 , zeroIndex = 1 : we swap `nums[zeroIndex=1]` (2) with `nums[index=1]` (2), zeroIndex = 2 after the swap
+3. nums = [1, 2, 3], index = 2 , zeroIndex = 2 : we swap `nums[zeroIndex=2]` (3) with `nums[index=2]` (3), zeroIndex = 3 after the swap
+4. Loop ends, nums = [1, 2, 3]
+
+Our algorithm swaps each non 0 digit with itself and makes no modifications to the `nums` list.
+
+##### Case 2 : Nums Has one 0
+
+The next case would be if `nums` only has one 0. For example [0, 3, 2].
+
+1. index = 0 , zeroIndex = 0 : since `nums[index=0]` == 0 we move to the next loop, nums remains unchanged as [0, 3, 2]
+2. index = 1, zeroIndex = 0 : we swap `nums[zeroIndex=0]` (0) with `nums[index=1]` (3), zeroIndex = 1 after the swap, nums = [3, 0, 2]
+3. index = 2, zeroIndex = 1, : we swap `nums[zeroIndex=1]` (0) with `nums[index=2]` (2), zeroIndex = 2 after the swap, nums = [3, 2, 0]
+
+What if our nums list looks something like this : [1, 2, 0, 3, 2]? We can split this list into two parts : [1, 2] and [0, 3, 2]. The first part is handled by Case 1 as described above. The second part is handled by case 2, with the only difference being that `zeroIndex` is now 2.
+
+##### Case 3 : Nums Has more than one 0
+
+What if `nums` has more than one 0? For example [0, 0, 3, 2].
+
+We can break this into two parts : [0] and [0, 3, 2]. For part 1, `zeroIndex` doesn't change and stays at 0. [0, 3, 2] however can be handled by case 2.
+
+##### Case 4 : Nums Has more than one 0 in different locations
+
+What if `nums` looks something like this : [0, 3, 0, 2]?
+
+1. index = 0, zeroIndex = 0 : since `nums[index=0]` == 0 we move to the next loop, nums is unchanged
+2. index = 1, zeroIndex = 0 : we swap `nums[index=1]` with `nums[zeroIndex=0]`, since we've made the swap zeroIndex is incremented as is 1, nums = [3, 0, 0, 2]
+3. index = 2, zeroIndex = 1 : since `nums[index=2]` == 0, we move to the next loop, nums is unchanged
+4. index = 3, zeroIndex = 1 : we swap `nums[index=3]` with `nums[zeroIndex=1]`, the final nums = [3, 2, 0, 0]

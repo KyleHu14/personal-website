@@ -178,6 +178,13 @@ declare module 'astro:content' {
   collection: "blog";
   data: InferEntrySchema<"blog">
 } & { render(): Render[".mdx"] };
+"283-move-zero.mdx": {
+	id: "283-move-zero.mdx";
+  slug: "283-move-zero";
+  body: string;
+  collection: "blog";
+  data: InferEntrySchema<"blog">
+} & { render(): Render[".mdx"] };
 "53-maximum-sub-array.md": {
 	id: "53-maximum-sub-array.md";
   slug: "53-maximum-sub-array";
