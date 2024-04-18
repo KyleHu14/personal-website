@@ -171,6 +171,13 @@ declare module 'astro:content' {
   collection: "blog";
   data: InferEntrySchema<"blog">
 } & { render(): Render[".mdx"] };
+"209-min-size-subarray.mdx": {
+	id: "209-min-size-subarray.mdx";
+  slug: "209-min-size-subarray";
+  body: string;
+  collection: "blog";
+  data: InferEntrySchema<"blog">
+} & { render(): Render[".mdx"] };
 "234-palindrome-ll.mdx": {
 	id: "234-palindrome-ll.mdx";
   slug: "234-palindrome-ll";

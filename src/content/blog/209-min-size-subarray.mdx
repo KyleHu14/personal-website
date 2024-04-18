@@ -1,0 +1,122 @@
+---
+title: "209. Minimum Size Subarray Sum"
+description: ""
+pubDate: "4/15/2024"
+tags: ["sliding window", "leetcode"]
+---
+
+import Figure from "../../components/Figure/Figure.tsx";
+
+##### Introduction | [Link](https://leetcode.com/problems/minimum-size-subarray-sum/description/)
+
+This problem utilizes the technique of a sliding window. If you are not familiar with the topic, I would suggest first understanding the technique before continuing to solve this problem.
+
+##### Brute Force
+
+If we were to brute force this problem we would have to check all the subarrays of the input array. Let's take the example 1 of the description which is the array [2,3,1,2,4,3]. The process of finding sub arrays would go something like this...
+
+1. Check all subarrays starting at index 0 : [2,3,1,2,4,3], [2,3,1,2,4,/], [2,3,1,2,/,/], ...
+2. Check all subarrays starting at index 1 : [/,3,1,2,4,3], [/,3,1,2,4,/], ...
+3. Check all subarrays starting at index 2
+4. Check all subarrays starting at index 3
+5. Check all subarrays starting at index 4 : [/,/,/,/,4,3], [/,/,/,/,4,/], ...
+
+Sliding window introduces a new way of approaching this problem.
+
+##### Solution
+
+What if we were to sequentially check all sub arrays of the input array to figure out the minimun length sub array that when summed is greater than or equal to the target? Let's first illustrate the idea of sequentially building a window.
+
+<Figure src="/209-min-len-subarray/window-1.PNG"></Figure>
+
+The figure above is the foundation of our algorithm. As of now, it is sequentially building a "window" that eventually covers the entire array using the left and right pointers.
+
+The first question that we should answer is at what point should we reduce the size of our window? As a note, we are reducing the size of our window since we at one point want to find the minimum length window. To answer this question we can look at 3 possibilities of a subarray.
+
+1. sum(subarray) > target
+2. sum(subarray) == target
+3. sum(subarray) < target
+
+Let's run through what we would want to do to subarray for each case.
+
+Case 1 & 2 : For cases 1 and 2, sum(subarray) is greater than or equal to target which meets the criteria for a potential subarray. In this case, we would want to keep track of subarray's length and then reduce the size of it to see if we can find a smaller subarray whose sum is still greater than or equal to target.
+
+Case 3 : If sum(subarray) is less than target, then the subarray does not fit our criteria and we should increase it's size until we meet case 1 & 2.
+
+Given this, let's visualize our algorithm with these cases now.
+
+<Figure src="/209-min-len-subarray/window-2.PNG"></Figure>
+
+Whenever we encounter a subarray that when summed is greater than or equal to target, we reduce its size to try to find a better subarray until we finish processing the array.
+
+##### Implementing the Solution
+
+Let's start simple by building a window that increases by one unit sequentially.
+
+```python
+class Solution:
+    def minSubArrayLen(self, target: int, nums: List[int]) -> int:
+        leftPointer = 0
+
+        for rightPointer in range(len(nums)):
+            # Code
+```
+
+Now, let's initialize some variables before implementing any more logic. I will initialize 2 more variables `minLen` and `subArraySum`. `minLen` represents the final minimum length that we will return whereas subArraySum represents the current subarray's sum that we are calculating in the for loop.
+
+```python
+class Solution:
+    def minSubArrayLen(self, target: int, nums: List[int]) -> int:
+        leftPointer = 0
+        minLen = float("inf")
+        subArraySum = 0
+
+        for rightPointer in range(len(nums)):
+            # Code
+
+        return minLen
+```
+
+Next, let's update the subArraySum variable in the for loop.
+
+```python
+class Solution:
+    def minSubArrayLen(self, target: int, nums: List[int]) -> int:
+        leftPointer = 0
+        minLen = float("inf")
+        subArraySum = 0
+
+        for rightPointer in range(len(nums)):
+            # Add nums[rightPointer] to subArraySum
+            subArraySum += nums[rightPointer]
+
+        return minLen
+```
+
+Adding to subArraySum is effectively case 3 where we want to add if the subarray's sum is less than target. Now let's handle case 1 & 2.
+
+```python
+class Solution:
+    def minSubArrayLen(self, target: int, nums: List[int]) -> int:
+        leftPointer = 0
+        minLen = float("inf")
+        subArraySum = 0
+
+        for rightPointer in range(len(nums)):
+            subArraySum += nums[rightPointer]
+
+            # Case 1 & 2
+            while subArraySum >= target:
+                minLen = min(minLen, x - left + 1)
+
+                subArraySum -= nums[left]
+                left += 1
+
+        return minLen
+```
+
+The while loop is here as removing a single value from the subarray does not guarantee that the sum will be less than target. We have to keep removing elements until `subArraySum` is less than target.
+
+As we perform this while loop we can also update `minLen`. We want to do this because within the while loop it is guaranteed that `subArraySum` will be greater than or equal to target.
+
+The last detail is that we are "removing" elements from the subarray by incrementing our left pointer.

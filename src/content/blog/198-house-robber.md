@@ -2,6 +2,7 @@
 title: '198. House Robber'
 description: ''
 pubDate: '3/10/2024'
+tags: ["dynamic programming", "leetcode"]
 ---
 ##### Introduction | [Link](https://leetcode.com/problems/house-robber/description/)
 This is a one dimensional dynamic programming problem. I will break down this problem with 5 steps. I would like to give credit to user heroes3001 as I followed their solution posted on leetcode [here](https://leetcode.com/problems/house-robber/solutions/156523/from-good-to-great-how-to-approach-most-of-dp-problems).

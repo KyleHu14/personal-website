@@ -1,16 +1,42 @@
 ---
 import Header from "../../components/Header/Header";
+import { BLOG_SITE_TITLE, SITE_DESCRIPTION } from '../../consts';
+import BaseHead from '../../components/BaseHead.astro';
 
+// Astro Imports
+import { type CollectionEntry, getCollection } from "astro:content";
 
+// Util Imports
+import getUniqueTags from "../../../utils/getUniqueTags"
+
+const posts = await getCollection("blog")
+const postTags = getUniqueTags(posts)
 ---
 
 <!doctype html>
 <html lang="en">
+	<head>
+		<BaseHead title={BLOG_SITE_TITLE} description={SITE_DESCRIPTION} />
+	</head>
 	<body>
 		<main>
 			<Header />
 			<section class="my-5">
-				In Progress!
+                <div class="text-3xl mb-3">Tags</div>
+                <div class="text-xl">Sort my posts by tags. IN PROGRESS!!</div>
+
+                <ul class="flex gap-x-4 flex-wrap">
+                    {postTags.map(tag => (
+                        <li class="tag cursor-pointer">
+                            {tag}
+                        </li>
+                    ))}
+                </ul>
+
+                <div id="sorted-posts">
+
+                </div>
+
 			</section>
 		</main>
 	</body>
@@ -23,10 +49,5 @@ import Header from "../../components/Header/Header";
         margin: auto;
         padding: 3em 1em;
     }
-    ul {
-        display: flex;
-        flex-direction: column;
-        margin: 0;
-        padding: 0;
-    }
+
 </style>
