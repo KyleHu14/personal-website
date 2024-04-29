@@ -1,0 +1,192 @@
+---
+title: "Introduction to QuickSort"
+description: ""
+pubDate: "4/28/2024"
+tags: ["quicksort", "sorting"]
+---
+
+import Figure from "../../components/Figure/Figure.tsx";
+
+##### Introduction
+
+I've recently came across several problems that require knowledge of QuickSort. Although I have learned it in the past, I never fully grasped the underlying concepts of QuickSort. I thought writing a blog about it would be a good oppurtunity to really learn about this algorithm.
+
+Quicksort is a sorting algorithm that has an average runtime of n \* log(n). The underlying technique of quicksort is through **partitioning**.
+
+##### Partioning
+
+The goal of partioning is to rearrange an array so that the left side of the array is less than a **pivot** and the right side of the array is greater than the **pivot**. A **pivot** is any number chosen in the array. In the context of Quicksort, we usually designate the last element of the array as the pivot.
+
+For example, let's say we have a array of elements as follows : [8, 7, 6, 1, 0, 9, 2].
+
+If 2 was our **pivot**, the goal of partioning would be to transform the above array into [ (1, 0,) 2, (8, 7, 6, 9)]. The array has been clearly splt into 2 halves surrounded by parantheses.
+
+How exactly do we partition an array?
+
+<Figure src="/quicksort/partition-1.PNG"></Figure>
+
+Taking the example we had above, let's illustrate the general steps of partioning.
+
+1. In step 1, we have a designated pivot and a traversal pointer pointer (p1).
+2. Upon the first occurence of a value that is greater than the pivot, we will mark it with a pointer (p2).
+3. In step 2, we traverse through the array until we encounter a value that is less than the pivot which is 1.
+4. In step 3, we swap the values of 1 and 8.
+5. P2 is now moved forward and we repeat this process until we have a fully partioned array.
+
+Now let's look at the implementation for partition in code.
+
+```python
+def partition(array):
+    # Stores the index of the leftmost value that is greater than pivot
+    swapIndex = 0
+
+    # What we partition the array on
+    pivot = array[-1]
+
+    for index in range(len(array)-1):
+        # If we encounter a value <= pivot perfrom a swap
+        if array[index] <= pivot:
+
+            # Swap the value at swapIndex with the value
+            # that is less than or equal to pivot
+            (array[index], array[swapIndex]) = (array[swapIndex], array[index])
+
+            # Increment the swapIndex
+            swapIndex += 1
+
+        # print(array)
+
+    # At the end we need to swap the last value of the array with swapIndex
+    (array[-1], array[swapIndex]) = (array[swapIndex], array[-1])
+```
+
+Using the image above, swapIndex will represent p2, the pivot is the same, and index represents p1. If you have any issues understanding the code, I would suggest uncommenting the print(array) statement to observe the behavior of the partition function.
+
+##### The Algorithm
+
+Now that we've reviewed partioning, we can now focus on how Quicksort utilizes this technique to sort an array.
+
+<Figure src="/quicksort/quicksort-1.PNG"></Figure>
+
+We can see that quicksort uses a divide conquer approach that follows the following steps.
+
+1. Given an array, partition it.
+2. Divide the array into two halves by the pivot value.
+3. Partition each half.
+4. Use the newly partioned array's pivot index to divide the array in half again.
+5. Repeat the cycle in step 1 after partioning each half until we have single values left.
+
+##### Implementing the Solution
+
+We've now reviewed how partioning works and quicksorting works from a general level. Let's combine the concepts together and write some code that implements the algorithm!
+
+To start, we're going to need borrow the partioning code that we wrote earlier.
+
+```python
+def partition(array):
+    swapIndex = 0
+
+    pivot = array[-1]
+
+    for index in range(len(array)-1):
+        if array[index] <= pivot:
+            (array[index], array[swapIndex]) = (array[swapIndex], array[index])
+
+            swapIndex += 1
+
+    (array[-1], array[swapIndex]) = (array[swapIndex], array[-1])
+```
+
+Before we continue, we will have to first make some adjustments to our partition function. Notice that for each time we partition an array, we need to partition the halves of the resulting array as well. We dont only just partition the entire array. Therefore, let's add two parameters that serve to indicate the range of the array that we want to partition.
+
+```python
+def partition(array, start, end):
+    swapIndex = start
+
+    pivot = array[end]
+
+    for index in range(start, end):
+        if array[index] <= pivot:
+            (array[index], array[swapIndex]) = (array[swapIndex], array[index])
+
+            swapIndex += 1
+
+    (array[end], array[swapIndex]) = (array[swapIndex], array[end])
+
+    return swapIndex
+```
+
+In step 4 of our algorithm, we also need a partition index so that we know how to divide our array. To do this, we also need to add the final index that the pivot will stay in.
+
+Now that we have finished the partion changes, we can move to implementing the Quicksort algorithm. Let's first define our function and write the inner logic of our function before using any loops. To start, we need to partition the entire array first.
+
+```python
+def partition(array, start, end):
+    swapIndex = start
+
+    pivot = array[end]
+
+    for index in range(len(array)-1):
+        if array[index] <= pivot:
+            (array[index], array[swapIndex]) = (array[swapIndex], array[index])
+
+            swapIndex += 1
+
+    (array[end], array[swapIndex]) = (array[swapIndex], array[end])
+
+    return swapIndex
+
+def quickSort(array, start, end):
+    pivotIndex = partition(array, start, end)
+```
+
+With the `pivotIndex` we can now partition the other two halves of our array. But it is not as simple as simply calling partition. We need to ensure that the arrays get sorted. This means that we need to recursively partition until there are 1 or 2 elements left in the array.
+
+```python
+def partition(array, start, end):
+    swapIndex = start
+
+    pivot = array[end]
+
+    for index in range(len(array)-1):
+        if array[index] <= pivot:
+            (array[index], array[swapIndex]) = (array[swapIndex], array[index])
+
+            swapIndex += 1
+
+    (array[end], array[swapIndex]) = (array[swapIndex], array[end])
+
+    return swapIndex
+
+def quickSort(array, start, end):
+    pivotIndex = partition(array, start, end)
+
+    quickSort(array, 0, pivotIndex)
+    quickSort(array, pivotIndex, high)
+```
+
+The code above however, results in an infinite recursion loop. One way to end this is to check if start < end.
+
+```python
+def partition(array, start, end):
+    swapIndex = start
+
+    pivot = array[end]
+
+    for index in range(len(array)-1):
+        if array[index] <= pivot:
+            (array[index], array[swapIndex]) = (array[swapIndex], array[index])
+
+            swapIndex += 1
+
+    (array[end], array[swapIndex]) = (array[swapIndex], array[end])
+
+    return swapIndex
+
+def quickSort(array, start, end):
+    if start < end:
+        pivotIndex = partition(array, start, end)
+
+        quickSort(array, 0, pivotIndex)
+        quickSort(array, pivotIndex, high)
+```
