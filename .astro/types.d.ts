@@ -199,6 +199,13 @@ declare module 'astro:content' {
   collection: "blog";
   data: InferEntrySchema<"blog">
 } & { render(): Render[".md"] };
+"75-sortcolors.mdx": {
+	id: "75-sortcolors.mdx";
+  slug: "75-sortcolors";
+  body: string;
+  collection: "blog";
+  data: InferEntrySchema<"blog">
+} & { render(): Render[".mdx"] };
 "quicksort.mdx": {
 	id: "quicksort.mdx";
   slug: "quicksort";

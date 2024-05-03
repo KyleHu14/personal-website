@@ -1,0 +1,143 @@
+---
+title: "75. Sort colors"
+description: ""
+pubDate: "5/1/2024"
+tags: ["array", "two pointer", "sorting", "quicksort"]
+---
+
+import Figure from "../../components/Figure/Figure.tsx";
+
+##### Introduction | [Link](https://leetcode.com/problems/sort-colors/description/)
+
+This is a sorting problem that uses the partioning concept from Quicksort. If you are not familiar with Quicksort, I'd highly suggest you to review it. You can check out my blog [**here**](https://personal-website-lovat-delta.vercel.app/blog/quicksort/) on QuickSort. This explanation will assume that the reader has a solid understanding of partioning.
+
+Lastly, parts of this explanation are referenced from Neetcode's video [**here**](https://www.youtube.com/watch?v=4xbWSRZHqac&t=735s). If this blog post isn't as clear, feel free to visit his video for a thorough explanation.
+
+##### Understanding the Description
+
+In my opinion, the description of this problem makes it sound a lot more complicated than it should be. Let's take a look at the description of the problem.
+
+_Given an array nums with n objects colored red, white, or blue, sort them in-place so that objects of the same color are adjacent, with the colors in the order red, white, and blue. We will use the integers 0, 1, and 2 to represent the color red, white, and blue, respectively._
+
+We can reach the following conclusions with this description :
+
+1. We have an array called nums
+2. Nums has n integers that are either 0, 1, or 2
+3. We must sort nums in place
+
+Our goal is to sort an array of multiple 0s, 1s, and 2s in place.
+
+##### A Basic Solution
+
+Let's first address the question of why partioning is an effective strategy. Partioning allows us to section off an array based on a certain value. Given this problem we can see that we need to partion the array 3 times with the pivot value being 0, 1, and 2 to achieve the solution. The values of `nums` will always be 0, 1, and 2. Therefore, partioning is a suitable strategy to solve this problem.
+
+Before we actually write the main function, let's first write our partion function.
+
+```python
+    def partition(self, inputArray, partitionValue):
+        endIndex = 0
+
+        for index in range(len(inputArray)):
+            if inputArray[index] <= partitionValue:
+                (inputArray[index], inputArray[endIndex]) = (inputArray[endIndex], inputArray[index])
+
+                endIndex += 1
+
+        return endIndex
+
+    def sortColors(self, nums: List[int]) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+```
+
+I've just added the partion function that was used in my previous post about Quicksort. The only noticeable change I've made is adding a partionValue. Instead of using the last value of the array, we will be sequentially partioning the values of 0, 1, and 2.
+
+Now that we have a partition function, we can just run it 3 times and sort the array.
+
+```python
+def partition(self, inputArray, partitionValue, startIndex):
+    endIndex = startIndex
+
+    for index in range(startIndex, len(inputArray)):
+        if inputArray[index] <= partitionValue:
+            (inputArray[index], inputArray[endIndex]) = (inputArray[endIndex], inputArray[index])
+
+            endIndex += 1
+
+    return endIndex
+
+
+def sortColors(self, nums: List[int]) -> None:
+    self.partition(nums, 0)
+    self.partition(nums, 1)
+    self.partition(nums, 2)
+
+```
+
+There is a problem however, this is not an in place solution as it takes 3 passes to find the solution. Even if we are to update the `startingIndex` for each call, we are still doing 3 passes. How can we achieve a solution by just running through the array in one pass?
+
+##### The Single Pass Solution
+
+Let's now think about how we could achieve a one pass solution. As of now, our partion algorithm guarantees that upon running all values on the left of the pivot value will be in order. For example, after running our algorithm on the following array : [0, 2, 0, 1, 1, 2].
+
+The array will look like [0, 0, 2, 1, 1, 2].
+
+As of now, we can achieve this because we have a left pointer that will perform swaps when encountering a 0. We could apply the same logic and have a right pointer that also does the same for 2. Let's first try implementing this logic.
+
+```python
+def sortColors(self, nums: List[int]) -> None:
+    left = 0
+    right = len(nums) - 1
+
+    for index in range(len(nums)):
+        if nums[index] == 0:
+            (nums[index], nums[left]) = (nums[left], nums[index])
+            left += 1
+        elif nums[index] == 2:
+            (nums[index], nums[right]) = (nums[right], nums[index])
+            right -= 1
+```
+
+Unfortunately, if `nums` is [2,0,2,1,1,0] then the resulting array is [0,0,2,2,1,1]. The first problem is that our function will check every index. Even if the end has 2's, our algorithm will still detect 2's and perform a swap. This ends up swapping 2's to the middle of the array. To fix this, we need to stop iterating when our index reaches the right pointer. We can use a while loop to fix this issue.
+
+```python
+def sortColors(self, nums: List[int]) -> None:
+    left = 0
+    right = len(nums) - 1
+    index = 0
+
+    while index <= right:
+        if nums[index] == 0:
+            (nums[index], nums[left]) = (nums[left], nums[index])
+            left += 1
+        elif nums[index] == 2:
+            (nums[index], nums[right]) = (nums[right], nums[index])
+            right -= 1
+
+        index += 1
+```
+
+This solution now seemingly solves everything. However there is still one more edge case that we need to consider. Let's take a look at the example below.
+
+<Figure src="/75-sortcolors/counterexample-1.PNG"></Figure>
+
+With the array [0, 1, 2, 1, 0, 2], we will reach the above situation in 3 loops. The problem here is that 2 will be swapped with 2 and will result in a final array of [0, 0, 2, 1, 1, 2] which is incorrect. To fix this issue, we can decrement index by 1 for this particular edge case.
+
+```python
+def sortColors(self, nums: List[int]) -> None:
+    left = 0
+    right = len(nums) - 1
+    index = 0
+
+    while index <= right:
+        if nums[index] == 0:
+            (nums[index], nums[left]) = (nums[left], nums[index])
+            left += 1
+        elif nums[index] == 2:
+            (nums[index], nums[right]) = (nums[right], nums[index])
+            right -= 1
+            index -= 1
+
+        index += 1
+```

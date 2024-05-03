@@ -1,52 +1,56 @@
 ---
-import BaseHead from '../components/BaseHead.astro';
-import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+import BaseHead from "../components/BaseHead.astro";
+import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 
-import Header from "../components/Header/Header"
-import HorizontalLine from '../components/HorizontalLine/HorizointalLine';
-import SocialLinks from '../components/SocialLinks/SocialLinks';
+import Header from "../components/Header/Header";
+import HorizontalLine from "../components/HorizontalLine/HorizointalLine";
+import SocialLinks from "../components/SocialLinks/SocialLinks";
 ---
 
 <!doctype html>
 <html lang="en">
-	<head>
-		
-	</head>
+	<head> </head>
 	<body>
 		<main>
 			<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
 			<Header />
-			
+
 			<div class="main-body text-left mt-10">
 				<div class="text-4xl mb-3">Hello! My name is Kyle.</div>
 				<p>
-					I'm a programmer who focuses on web development using TypeScript, React, and Supabase. 
-					This website serves as my portfolio and my blog. As of now,
-					I plan to post my leetcode solutions and development logs of my personal projects.
-					Thank you for visiting.
+					I'm a recent graduate from the University of California,
+					Irvine. I focus on web development using TypeScript, React,
+					and Supabase. This website serves as my portfolio and my
+					blog. As of now, I plan to post my leetcode solutions and
+					development logs of my personal projects. Thank you for
+					visiting.
 				</p>
 
 				<SocialLinks />
-				
+
 				<div class="mt-3 mb-8">
-					<HorizontalLine/>
+					<HorizontalLine />
 				</div>
-				
+
+				<!-- prettier-ignore -->
 				<div class="projects">
 					<div class="text-3xl mb-5">My Projects</div>
 					<div class="text-2xl">Job Tracker | <a href="https://github.com/KyleHu14/job-tracker">Link</a></div>
 					<p>
-						A web application that can track your job applications.
+						A website that can track your job applications.
 					</p>
 					
 					<div class="text-2xl">Theta Website | <a href="https://github.com/KyleHu14/theta-website">Link</a> </div>
 					<p>
 						A website built for a sorority at UCI.
 					</p>
-				</div>
 
+					<div class="text-2xl">Watchface | <a href="https://github.com/pielab-uci/watchface-website">Link</a> </div>
+					<p>
+						A website built for a research project at UCI.
+					</p>
+				</div>
 			</div>
-			
 		</main>
 	</body>
 </html>
