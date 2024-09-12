@@ -1,13 +1,13 @@
 ---
-import type { CollectionEntry } from 'astro:content';
-import BaseHead from '../components/BaseHead.astro';
-import FormattedDate from '../components/FormattedDate.astro';
+import type { CollectionEntry } from "astro:content"
+import BaseHead from "../components/BaseHead.astro"
+import FormattedDate from "../components/FormattedDate.astro"
 
-import Header from '../components/Header/Header';
+import Header from "../components/Navbar/Navbar"
 
-type Props = CollectionEntry<'blog'>['data'];
+type Props = CollectionEntry<"blog">["data"]
 
-const { title, description, pubDate, updatedDate } = Astro.props;
+const { title, description, pubDate, updatedDate } = Astro.props
 ---
 
 <html lang="en">
@@ -16,16 +16,15 @@ const { title, description, pubDate, updatedDate } = Astro.props;
 	</head>
 
 	<body>
-		
 		<main>
-			<div class="header-container">
+			<div class="m-auto md:w-[720px]">
 				<Header />
-			</div>	
-			
+			</div>
+
 			<article>
 				<!--  -->
-				<div class="prose prose-h5:text-3xl prose-p:text-xl prose-ul:text-xl prose-a:no-underline">
-					
+				<div
+					class="prose prose-h5:text-3xl prose-p:text-xl prose-ul:text-xl prose-a:no-underline">
 					<div class="title">
 						<div class="my-5 text-5xl font-semibold">{title}</div>
 						<div class="date">
@@ -33,7 +32,8 @@ const { title, description, pubDate, updatedDate } = Astro.props;
 							{
 								updatedDate && (
 									<div class="last-updated-on">
-										Last updated on <FormattedDate date={updatedDate} />
+										Last updated on{" "}
+										<FormattedDate date={updatedDate} />
 									</div>
 								)
 							}
@@ -52,6 +52,9 @@ const { title, description, pubDate, updatedDate } = Astro.props;
 		width: 100%;
 		max-width: 100%;
 		margin: 0;
+	}
+	a {
+		text-color: rgb(255, 255, 255);
 	}
 	.hero-image {
 		width: 100%;
@@ -83,7 +86,7 @@ const { title, description, pubDate, updatedDate } = Astro.props;
 	.last-updated-on {
 		font-style: italic;
 	}
-	.header-container{
+	.header-container {
 		width: 720px;
 		margin: auto;
 	}

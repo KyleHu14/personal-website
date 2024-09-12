@@ -1,5 +1,5 @@
-import { socialsMetaData } from "../../../config";
-import socialIcons from "../../../socialIcons";
+import { socialsMetaData } from "../../config"
+import socialIcons from "../../socialIcons"
 
 export default function SocialLinks() {
 	return (
@@ -18,5 +18,5 @@ export default function SocialLinks() {
 					))}
 			</div>
 		</div>
-	);
+	)
 }

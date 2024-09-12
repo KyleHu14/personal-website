@@ -1,18 +1,16 @@
 // React Components
-import Icon from "./Icon";
-import HeaderLink from "./HeaderLink";
-import HorizontalLine from "../HorizontalLine/HorizointalLine";
+import HeaderLink from "./NavLink"
+import HorizontalLine from "../HorizointalLine"
 
 // Constants
-import { LINKEDIN_LINK, GITHUB_LINK } from "../../consts";
-import { useState } from "react";
+import { useState } from "react"
 
 export default function Header() {
-	const [isOpen, setIsOpen] = useState(false);
+	const [isOpen, setIsOpen] = useState(false)
 
 	const toggleNavbar = () => {
-		setIsOpen(!isOpen);
-	};
+		setIsOpen(!isOpen)
+	}
 
 	return (
 		<>
@@ -28,5 +26,5 @@ export default function Header() {
 			</nav>
 			<HorizontalLine />
 		</>
-	);
+	)
 }
