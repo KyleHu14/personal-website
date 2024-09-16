@@ -6,7 +6,7 @@ interface Props {
 export default function ProjectLink({ link, text }: Props) {
 	return (
 		<a
-			className="transition duration-300 ease-in text-blue-500 hover:text-blue-900"
+			className="transition duration-300 ease-in text-[#2337ff]"
 			href={link}>
 			{text}
 		</a>
