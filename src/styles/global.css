@@ -29,8 +29,6 @@ svg.icon-tabler {
 body {
 	/* @apply font-mono; */
 	/* font-family: "Atkinson", sans-serif; */
-	margin: 0;
-	padding: 0;
 	text-align: left;
 	background: linear-gradient(var(--gray-gradient)) no-repeat;
 	background-size: 100% 600px;
@@ -39,8 +37,7 @@ body {
 	color: rgb(var(--gray-dark));
 	font-size: 20px;
 	line-height: 1.7;
-}
-main {
+
 	width: 720px;
 	max-width: calc(100% - 2em);
 	margin: auto;
